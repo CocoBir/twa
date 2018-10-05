@@ -146,7 +146,7 @@ function output {
     message="${3//\"/\"\"}"
     message="\"${message}\""
 
-    echo "${1},${2},${message}"
+    echo "${1},${2},${message},${4}"
   else
     # default is ANSI
     # colorize first arg
@@ -171,20 +171,20 @@ function PASS {
 
 # MEH: A test passed, but with one or more things that could be improved.
 function MEH {
-  msg=$(eval "echo \"${TWA_CODES[${1}]}\"")
-  output "MEH" "${domain}" "${msg}"
+  msg=$(eval "echo \"${1}: ${TWA_CODES[${1}]}\"")
+  output "MEH" "${domain}" "${msg}" "${1}"
 }
 
 # FAIL: A test failed, and should be fixed.
 function FAIL {
-  msg=$(eval "echo \"${TWA_CODES[${1}]}\"")
-  output "FAIL" "${domain}" "${msg}"
+  msg=$(eval "echo \"${1}: ${TWA_CODES[${1}]}\"")
+  output "FAIL" "${domain}" "${msg}" "${1}"
 }
 
 # FATAL: A really important test failed, and should be fixed immediately.
 function FATAL {
-  msg=$(eval "echo \"${TWA_CODES[${1}]}\"")
-  output "FATAL" "${domain}" "${msg}"
+  msg=$(eval "echo \"${1}: ${TWA_CODES[${1}]}\"")
+  output "FATAL" "${domain}" "${msg}" "${1}"
 }
 
 # UNK: The server gave us something we didn't understand.
@@ -664,7 +664,7 @@ fi
 
 # If we're in CSV mode, write some column titles.
 if [[ -n "${csv}" ]]; then
-  output status domain message
+  output status domain message code
 fi
 
 stage_0_has_https
